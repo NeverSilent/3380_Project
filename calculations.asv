@@ -1,0 +1,6 @@
+%% Problem Specification
+
+group_num = 7;
+
+% Power to be delivered
+power_oDeliver = (mod(group_num, 5) * 5) + 20;
