@@ -40,5 +40,9 @@ N_P = 2 / ( (1 + 2*m_G) * (sind(pressureAngle))^2 ) ...
 
 N_P = ceil(N_P);    % Round up to the nearest integer
 
-% N2:
+% Number of teeth
 N_2 = N_P;
+N_4 = N_P;
+
+N_3 = m_G * N_2;    % 71.55: try rounding up
+N_3 = ceil(N_3);
