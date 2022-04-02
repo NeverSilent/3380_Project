@@ -14,6 +14,7 @@
 syms Vxy(x) Vxz(x) Mxy(x) Mxz(x) x Torque(x)
 
 diamGear2 = 12; %diameter of gear 2
+diamGear3 = 2; %diameter of gear 3
 F12R = 197; %Force from gear 1 on gear 2 radial
 F12T = 540; %Force from gear 1 on gear 2 tangential
 F43R = 885; %Force from gear 4 on gear 3 radial
