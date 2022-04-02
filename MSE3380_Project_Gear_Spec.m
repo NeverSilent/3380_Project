@@ -344,6 +344,21 @@ Gear_Diameters_Inch = [d_2_inch; d_3_inch; d_4_inch; d_5_inch];
 Gear_Face_Width_Inch = [face_width_inch_23; face_width_inch_23;
     face_width_inch; face_width_inch];
 
-Gear_Summary_Inch = table(Gear_Numbers,Gear_Diameters_Inch,Gear_Heat_Treatment, ...
-    Gear_Contact_Strength_Psi,Gear_Bending_Strength_Psi,Gear_Diameters_Inch, ...
-    Gear_Face_Width_Inch)
+Gear_Summary_Inch_Calculated = table(Gear_Numbers,Gear_Diameters_Inch,Gear_Heat_Treatment, ...
+    Gear_Contact_Strength_Psi,Gear_Bending_Strength_Psi, Gear_Face_Width_Inch)
+
+
+%Summary table with the preferred numbers.
+
+Gear_Numbers_R = {'Gear 2'; 'Gear 3'; 'Gear 4'; 'Gear 5'};
+Gear_Diametral_Pitch_Inch_R = [P_inch; P_inch; P_inch; P_inch];
+Gear_Heat_Treatment_R = {'Grade 1 flamed hardend'; 'Grade 1 flamed and Hardened'; 
+    'Grade 3 Carburized and hardened'; 'Grade 3 Carburized and hardened'};
+Gear_Contact_Strength_Psi_R = [170000; 170000; 275000; 275000];
+Gear_Bending_Strength_Psi_R = [22000; 22000; 75000; 75000];
+Gear_Diameters_Inch_R = [2.5; 11.5; 2.5; 11.5];
+Gear_Face_Width_Inch_R = [face_width_inch_23; face_width_inch_23;
+    ceil(face_width_inch); ceil(face_width_inch)];
+
+Gear_Summary_Inch_Rounded = table(Gear_Numbers_R,Gear_Diameters_Inch_R,Gear_Heat_Treatment_R, ...
+    Gear_Contact_Strength_Psi_R,Gear_Bending_Strength_Psi_R,Gear_Face_Width_Inch_R)
