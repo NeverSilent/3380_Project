@@ -1,5 +1,5 @@
 function  [varargout] = SFBM( varargin)
-%SFBM calculates the shear force and bending moment, plot the diagram and
+%SFBM calculates the shear force and bending moment, plot the diagram and 
 %computes the equations of the lines.
 global Name nc nd nm Cload Dload Mload Cloc Dloc Mloc Xload DistFfun ....
        DistPoly Xtick YtickSF YtickBM DeciPlace TypeF TypeM TypeD EqRange

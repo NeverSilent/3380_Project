@@ -126,9 +126,9 @@ function deflection_analysis(D1,D2,D3,D4, A,B,G,J, E)
     solve_constants = slope_xy_AD - slope_xy_DF == 0
     solve(solve_constants)
     
-
     
-
+    
+    
 %     fplot(moment_xy_piece1, [A, G])
 %     hold on;
 %     fplot(moment_xy_piece2, [G, J])

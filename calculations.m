@@ -14,8 +14,17 @@ inputSpeedMax = inputSpeed * 1.20;
 % Minimum speed reduction (20:1)
 speedReduction_min = 20;
 
-% Output speed [rpm]
+% Output speed nominal[rpm]
 outputSpeed = inputSpeed / speedReduction_min;
+
+% Output speed Max[rpm]
+outputSpeedMax = inputSpeedMax / speedReduction_min;
+
+% Output Torque nominal [Nm]
+torqueOutput = powerToDeliver * 745.7 / outputSpeed * pi/30;
+
+% Output Torque Max [Nm]
+torqueOutputMax = powerToDeliver * 745.7 / outputSpeedMax * pi/30;
 
 %% Speed, Torque, and Gear Ratios
 
