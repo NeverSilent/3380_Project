@@ -55,9 +55,9 @@ function deflection_analysis(D1,D2,D3,D4, A,B,G,J, Mxy, Mxz, E)
     % Redefine the shaft axial positions with bearing A's location as the
     % datum:
     loc_A = A - A
-    loc_B = B - A
-    loc_G = G - A
-    loc_J = J - A
+    loc_B = B - A;
+    loc_G = G - A;
+    loc_J = J - A;
 
     % Calculate flexural rigidities
     EI_D1 = E * (pi * D1^4) / 64
@@ -69,8 +69,8 @@ function deflection_analysis(D1,D2,D3,D4, A,B,G,J, Mxy, Mxz, E)
     syms x
 
     % Obtain symbolic function for integrals between A and G
-    assume((loc_A < x) & (x < loc_G))
     integral_xy_AG = int(Mxy) / EI_D1
+    assume((loc_A < x) & (x < loc_G))
     syms C1 C2      % integration constants
     slope_xy_AG = (simplify(integral_xy_AG)) + C1    %   = slope
     defl_xy_AG = (simplify(int(slope_xy_AG))) + C2   %   = deflection
@@ -82,17 +82,17 @@ function deflection_analysis(D1,D2,D3,D4, A,B,G,J, Mxy, Mxz, E)
     defl_xy_AG = eval(defl_xy_AG)
 
     % Obtain symbolic function for integrals between J and B
+    integral_xy_JB = int(Mxy) / EI_D7;
     assume((loc_J < x) & (x < loc_B))
-    integral_xy_JB = int(Mxy) / EI_D7
     syms C3 C4      % integration constants
-    slope_xy_JB = (vpa(simplify(integral_xy_JB))) + C3    %   = slope
+    slope_xy_JB = (simplify(integral_xy_JB)) + C3    %   = slope
     defl_xy_JB = (simplify(int(slope_xy_JB))) + C4   %   = deflection
     % BOUNDARY CONDITION: at B, bearing acts like a pin support 
     % -> zero deflection.
-    subs_defl_xy_JB = subs(defl_xy_JB(loc_B), x, loc_B)
-    C4 = solve(subs_defl_xy_JB == 0, C4)    % Solve for C4 in terms of C3
-    % Substitute solved C4 into deflection
-    defl_xy_JB = eval(defl_xy_JB)
+    subs_defl_xy_JB = subs(defl_xy_JB(loc_B), x, 0)
+    C4 = solve(subs_defl_xy_ == 0)
+    % Substitute C2 (= 0) into deflection
+    defl_xy_AG = eval(defl_xy_AG)
 end
 
 function SF_BM_diagrams(A,B,G,J,length, Wt_23,Wr_23,Wt_54,Wr_54)
