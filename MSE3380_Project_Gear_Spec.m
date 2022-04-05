@@ -373,6 +373,8 @@ Gear_Summary_Inch_Rounded = table(Gear_Numbers,Gear_Diameters_Inch_R,Gear_Heat_T
 
 
 %Summary table with the SI units.
+%7 teeth/in was converted to teeth/m
+Gear_Teeth_Per_Meter = [276; 276; 276; 276];
 Gear_Contact_Strength_MPa = [1172.11; 1172.11; 1896.06; 1896.06];
 Gear_Bending_Strength_MPa = [151.68; 151.68; 517.11; 517.11];
 Gear_Diameters_m = [0.06349; 0.2857; 0.06349; 0.2857];
@@ -380,4 +382,4 @@ Gear_Diameters_m = [0.06349; 0.2857; 0.06349; 0.2857];
 Gear_Face_Width_m = [0.04; 0.04; 0.05; 0.05];
 
 Gear_Summary_SI = table(Gear_Numbers,Gear_Diameters_m,Gear_Heat_Treatment, ...
-    Gear_Contact_Strength_MPa,Gear_Bending_Strength_MPa,Gear_Face_Width_m)
+    Gear_Contact_Strength_MPa,Gear_Bending_Strength_MPa,Gear_Face_Width_m, Gear_Teeth_Per_Meter)
