@@ -1,8 +1,6 @@
-%%
-% load('Matfiles/force_analysis_vars.mat') % Load all force analysis vars
-load('Matfiles/force_analysis_vars.mat', 'Mxy', 'Mxz')
+%% Define parameters to be passed into the function
 
-%% Test with parameters from Ex. 7-2 and 7-3
+load('Matfiles/force_analysis_vars.mat', 'Mxy', 'Mxz')
 
 D1 = 1.0;   % [in]
 D2 = 1.4;
@@ -14,22 +12,42 @@ A = 0.75;       % Bearing A
 B = 10.75;      % Bearing B
 G = 2.75;       % Gear 3
 J = 8.50;       % Gear 4
-length = 11.50;
 
-% Transmitted gear loads [lbf]
-Wt_23 = 540;
-Wr_23 = 197;
-Wt_54 = 2431;
-Wr_54 = 885;
+% Redefine the shaft axial positions with bearing A's location as the datum:
+loc_A = A - A;
+loc_B = B - A;
+loc_G = G - A;
+loc_J = J - A;
 
 % Young's modulus
 E = 30e6;    % [psi]
 
-[slope_xy, defl_xy] = deflection_analysis(D1,D2,D3,D4, A,B,G,J, Mxy, E);
-[slope_xz, defl_xz] = deflection_analysis(D1,D2,D3,D4, A,B,G,J, Mxz, E);
+%% Call function for analysis in each plane, determine magnitudes, and show tables
+
+[slope_xy, defl_xy] = deflection_analysis(D1,D2,D3,D4, loc_A,loc_B,loc_G,loc_J, Mxy, E);
+[slope_xz, defl_xz] = deflection_analysis(D1,D2,D3,D4, loc_A,loc_B,loc_G,loc_J, Mxz, E);
+
+mag_slope = sqrt(slope_xy^2 + slope_xz^2);
+mag_defl = sqrt(defl_xy^2 + defl_xz^2);
+
+% Get slopes and deflections at key locations (bearings and gears)
+slope_A = double(subs(mag_slope, loc_A));
+slope_B = double(subs(mag_slope, loc_B));
+slope_G = double(subs(mag_slope, loc_G));
+slope_J = double(subs(mag_slope, loc_J));
+deflection_G = double(subs(mag_defl,loc_G));
+deflection_J = double(subs(mag_defl, loc_J));
+
+% Show tables of results
+locations1 = {'Bearing A'; 'Bearing B'; 'Gear G'; 'Gear J'};
+slopes = [slope_A; slope_B; slope_G; slope_J];
+locations2 = {'Gear G'; 'Gear J'};
+deflections = [deflection_G; deflection_J;];
+table(locations1, slopes, 'VariableNames',{'Locations','Slopes [rad]'})
+table(locations2, deflections, 'VariableNames',{'Locations','Deflections [in]'})
 
 %% Function
-function [slope, defl] = deflection_analysis(D1,D2,D3,D4, A,B,G,J, BM, E)
+function [slope, defl] = deflection_analysis(D1,D2,D3,D4, loc_A,loc_B,loc_G,loc_J, BM, E)
     addpath('SFBM');
     % INPUT PARAMETERS:
     % Shaft section diameters
@@ -51,13 +69,6 @@ function [slope, defl] = deflection_analysis(D1,D2,D3,D4, A,B,G,J, BM, E)
 
     % Determine if deflections and slopes at the key locations (Bearing A, 
     % Bearing B, Gear 3, Gear 4) are acceptable as per Table 7-2 (p. 391)
-    
-    % Redefine the shaft axial positions with bearing A's location as the
-    % datum:
-    loc_A = A - A;
-    loc_B = B - A;
-    loc_G = G - A;
-    loc_J = J - A;
 
     % Calculate flexural rigidities
     EI_D1 = E * (pi * D1^4) / 64;
