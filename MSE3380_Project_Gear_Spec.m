@@ -67,6 +67,10 @@ T_3 = T_2 * (w_2/w_3);
 T_4 = T_3;
 T_5 = T_2 * (w_2/w_5);
 
+T_2_lbfft = 0.7375621493*T_2;
+T_3_lbfft = 0.7375621493*T_3;
+T_4_lbfft = 0.7375621493*T_4;
+T_5_lbfft = 0.7375621493*T_5;
 
 
 %Second part of the gear specification
@@ -334,6 +338,8 @@ n_3 = (22000*Y_N_3)/Stress_num_bending_3;
 
 
 %GEAR SPECIFICATION SUMMARY TABLE
+
+%{
 Gear_Numbers = {'Gear 2'; 'Gear 3'; 'Gear 4'; 'Gear 5'};
 Gear_Diametral_Pitch_Inch = [P_inch; P_inch; P_inch; P_inch];
 Gear_Heat_Treatment = {'Grade 1 flamed hardend'; 'Grade 1 flamed and Hardened'; 
@@ -346,13 +352,14 @@ Gear_Face_Width_Inch = [face_width_inch_23; face_width_inch_23;
 
 Gear_Summary_Inch_Calculated = table(Gear_Numbers,Gear_Diameters_Inch,Gear_Heat_Treatment, ...
     Gear_Contact_Strength_Psi,Gear_Bending_Strength_Psi, Gear_Face_Width_Inch)
+%}
 
 
 %Summary table with the preferred numbers.
 
-Gear_Numbers_R = {'Gear 2'; 'Gear 3'; 'Gear 4'; 'Gear 5'};
+Gear_Numbers = {'Gear 2'; 'Gear 3'; 'Gear 4'; 'Gear 5'};
 Gear_Diametral_Pitch_Inch_R = [P_inch; P_inch; P_inch; P_inch];
-Gear_Heat_Treatment_R = {'Grade 1 flamed hardend'; 'Grade 1 flamed and Hardened'; 
+Gear_Heat_Treatment = {'Grade 1 flamed hardend'; 'Grade 1 flamed and Hardened'; 
     'Grade 3 Carburized and hardened'; 'Grade 3 Carburized and hardened'};
 Gear_Contact_Strength_Psi_R = [170000; 170000; 275000; 275000];
 Gear_Bending_Strength_Psi_R = [22000; 22000; 75000; 75000];
@@ -360,5 +367,27 @@ Gear_Diameters_Inch_R = [2.5; 11.5; 2.5; 11.5];
 Gear_Face_Width_Inch_R = [face_width_inch_23; face_width_inch_23;
     ceil(face_width_inch); ceil(face_width_inch)];
 
-Gear_Summary_Inch_Rounded = table(Gear_Numbers_R,Gear_Diameters_Inch_R,Gear_Heat_Treatment_R, ...
+Gear_Summary_Inch_Rounded = table(Gear_Numbers,Gear_Diameters_Inch_R,Gear_Heat_Treatment, ...
     Gear_Contact_Strength_Psi_R,Gear_Bending_Strength_Psi_R,Gear_Face_Width_Inch_R)
+
+
+
+%Summary table with the SI units.
+Gear_Contact_Strength_MPa = [1172.11; 1172.11; 1896.06; 1896.06];
+Gear_Bending_Strength_MPa = [151.68; 151.68; 517.11; 517.11];
+Gear_Diameters_m = [0.06349; 0.2857; 0.06349; 0.2857];
+Gear_Face_Width_m = [0.0381; 0.0381; 0.04987; 0.04987];
+
+Gear_Summary_SI = table(Gear_Numbers,Gear_Diameters_m,Gear_Heat_Treatment, ...
+    Gear_Contact_Strength_MPa,Gear_Bending_Strength_MPa,Gear_Face_Width_m)
+
+
+
+%Summary table with the rounded SI units but with preferred number.
+Gear_Contact_Strength_MPa = [1172.11; 1172.11; 1896.06; 1896.06];
+Gear_Bending_Strength_MPa = [151.68; 151.68; 517.11; 517.11];
+Gear_Diameters_m_R = [0.08; 0.3; 0.08; 0.3];
+Gear_Face_Width_m_R = [0.04; 0.04; 0.05; 0.05];
+
+Gear_Summary_SI_R = table(Gear_Numbers,Gear_Diameters_m_R,Gear_Heat_Treatment, ...
+    Gear_Contact_Strength_MPa,Gear_Bending_Strength_MPa,Gear_Face_Width_m_R)
