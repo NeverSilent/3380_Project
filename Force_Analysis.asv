@@ -13,13 +13,13 @@
 %set up the independant variable as a symbolic
 syms Vxy(x) Vxz(x) Mxy(x) Mxz(x) x Torque(x)
 
-pressureAngle = 20; %pressure angle of gears in degrees
+
 diamGear2 = 12; %diameter of gear 2
 diamGear3 = 2; %diameter of gear 3
 F12T = 540; %Force from gear 1 on gear 2 tangential
 F12R = F12T*tan(deg2rad(pressureAngle)); %Force from gear 1 on gear 2 radial
 F43T = 2431; %Force from gear 4 on gear 3 tangential
-F43R = F43T*tan(deg2rad(pressureAngle)); %Force from gear 4 on gear 3 radial
+F43R = 885; %Force from gear 4 on gear 3 radial
 
 %going to be taking the effective length of analysis to be from the center
 %of bearing A to the center of bearing B... datum if center of bearing A
