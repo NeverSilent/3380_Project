@@ -339,7 +339,7 @@ n_3 = (22000*Y_N_3)/Stress_num_bending_3;
 
 %GEAR SPECIFICATION SUMMARY TABLE
 
-%{
+
 Gear_Numbers = {'Gear 2'; 'Gear 3'; 'Gear 4'; 'Gear 5'};
 Gear_Diametral_Pitch_Inch = [P_inch; P_inch; P_inch; P_inch];
 Gear_Heat_Treatment = {'Grade 1 flamed hardend'; 'Grade 1 flamed and Hardened'; 
@@ -351,12 +351,12 @@ Gear_Face_Width_Inch = [face_width_inch_23; face_width_inch_23;
     face_width_inch; face_width_inch];
 
 Gear_Summary_Inch_Calculated = table(Gear_Numbers,Gear_Diameters_Inch,Gear_Heat_Treatment, ...
-    Gear_Contact_Strength_Psi,Gear_Bending_Strength_Psi, Gear_Face_Width_Inch)
-%}
+    Gear_Contact_Strength_Psi,Gear_Bending_Strength_Psi, Gear_Face_Width_Inch, Gear_Diametral_Pitch_Inch)
+
 
 
 %Summary table with the preferred numbers.
-
+%{
 Gear_Numbers = {'Gear 2'; 'Gear 3'; 'Gear 4'; 'Gear 5'};
 Gear_Diametral_Pitch_Inch_R = [P_inch; P_inch; P_inch; P_inch];
 Gear_Heat_Treatment = {'Grade 1 flamed hardend'; 'Grade 1 flamed and Hardened'; 
@@ -369,7 +369,7 @@ Gear_Face_Width_Inch_R = [face_width_inch_23; face_width_inch_23;
 
 Gear_Summary_Inch_Rounded = table(Gear_Numbers,Gear_Diameters_Inch_R,Gear_Heat_Treatment, ...
     Gear_Contact_Strength_Psi_R,Gear_Bending_Strength_Psi_R,Gear_Face_Width_Inch_R)
-
+%}
 
 
 %Summary table with the SI units.
