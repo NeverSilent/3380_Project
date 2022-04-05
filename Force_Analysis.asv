@@ -101,7 +101,6 @@ ylabel("MTot (Nm)");
 subplot(6, 1, 6);
 fplot(Torque, [0, supportBLoc - supportALoc], MeshDensity=200, LineWidth = 2)
 ylabel("Torque (Nm)");
-xlabel("Distance from Datum (Inch)");
 
 %find the max bending moment and where it is relative to the datum of the
 %far left edge of the shaft
@@ -112,4 +111,3 @@ MaxBendingMomemtLoc = vpa((MaxBendingMomemtLoc * 0.001) + supportALoc, 4)
 
 %compare the MaxBendingMomemtLoc to the closest SCF and choose the critical
 %point to pay attention to.
-Shaft_Layout
