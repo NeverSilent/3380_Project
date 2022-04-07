@@ -1,6 +1,6 @@
 %% Define parameters to be passed into the function
 
-load('Matfiles/force_analysis_vars.mat', 'Mxy', 'Mxz')
+load('Matfiles/force_analysis_vars_2022_04_06.mat', 'Mxy', 'Mxz')
 
 D1 = 1.0;   % [in]
 D2 = 1.4;
@@ -24,8 +24,8 @@ E = 30e6;    % [psi]
 
 %% Call function for analysis in each plane, determine magnitudes, and show tables
 
-[slope_xy, defl_xy] = deflection_analysis(D1,D2,D3,D4, loc_A,loc_B,loc_G,loc_J, Mxy, E);
-[slope_xz, defl_xz] = deflection_analysis(D1,D2,D3,D4, loc_A,loc_B,loc_G,loc_J, Mxz, E);
+[slope_xy, defl_xy] = deflection_analysis(D1,D2,D3,D4, loc_A,loc_B,loc_G,loc_J, Mxy, E, 'xy');
+[slope_xz, defl_xz] = deflection_analysis(D1,D2,D3,D4, loc_A,loc_B,loc_G,loc_J, Mxz, E, 'xz');
 
 mag_slope = sqrt(slope_xy^2 + slope_xz^2);
 mag_defl = sqrt(defl_xy^2 + defl_xz^2);
@@ -47,7 +47,7 @@ table(locations1, slopes, 'VariableNames',{'Locations','Slopes [rad]'})
 table(locations2, deflections, 'VariableNames',{'Locations','Deflections [in]'})
 
 %% Function
-function [slope, defl] = deflection_analysis(D1,D2,D3,D4, loc_A,loc_B,loc_G,loc_J, BM, E)
+function [slope, defl] = deflection_analysis(D1,D2,D3,D4, loc_A,loc_B,loc_G,loc_J, BM, E, plane)
     addpath('SFBM');
     % INPUT PARAMETERS:
     % Shaft section diameters
@@ -66,6 +66,8 @@ function [slope, defl] = deflection_analysis(D1,D2,D3,D4, loc_A,loc_B,loc_G,loc_
     % M: symbolic piecewise function of bending moment.
 
     % E: Young's Modulus
+
+    % Plane: a string indicating which plane's bending moment was used (xy or xz).
 
     % Determine if deflections and slopes at the key locations (Bearing A, 
     % Bearing B, Gear 3, Gear 4) are acceptable as per Table 7-2 (p. 391)
@@ -154,7 +156,7 @@ function [slope, defl] = deflection_analysis(D1,D2,D3,D4, loc_A,loc_B,loc_G,loc_
     hold on;
     fplot(slope_GJ, [loc_G loc_J])
     fplot(slope_JB, [loc_J loc_B])
-    title('Slope')
+    title([plane, '-plane: Slope'])
     xlabel('Axial position from bearing A (in)')
     ylabel('Slope \theta (rad)')
     yline(0)
@@ -165,7 +167,7 @@ function [slope, defl] = deflection_analysis(D1,D2,D3,D4, loc_A,loc_B,loc_G,loc_
     hold on;
     fplot(defl_GJ, [loc_G loc_J])
     fplot(defl_JB, [loc_J loc_B])
-    title('Deflection')
+    title([plane, '-plane: Deflection'])
     xlabel('Axial position from bearing A (in)')
     ylabel('Deflection y (in)')
     yline(0)
