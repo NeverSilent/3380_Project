@@ -80,28 +80,28 @@ Torque(x) = piecewise((0 <= x) & (x < (position2 - supportALoc)), 0, ...
 figure();
 subplot(6, 1, 1);
 fplot(Vxy(x), [0, supportBLoc - supportALoc], MeshDensity=200, LineWidth = 2)
-ylabel("V x-y Plane (N)");
+ylabel("V x-y Plane (lbf)");
 
 subplot(6, 1, 2);
 fplot(Mxy, [0, supportBLoc - supportALoc], MeshDensity=200, LineWidth = 2)
-ylabel("M x-y Plane (Nm)");
+ylabel("M x-y Plane (lbf-in)");
 
 subplot(6, 1, 3);
 fplot(Vxz, [0, supportBLoc - supportALoc], MeshDensity=200, LineWidth = 2)
-ylabel("V x-z Plane (N)");
+ylabel("V x-z Plane (lbf)");
 
 subplot(6, 1, 4);
 fplot(Mxz, [0, supportBLoc - supportALoc], MeshDensity=200, LineWidth = 2)
-ylabel("M x-z Plane (Nm)");
+ylabel("M x-z Plane (lbf-in)");
 
 subplot(6, 1, 5);
 fplot(M, [0, supportBLoc - supportALoc], MeshDensity=200, LineWidth = 2)
-ylabel("MTot (Nm)");
+ylabel("MTot (lbf-in)");
 
 subplot(6, 1, 6);
 fplot(Torque, [0, supportBLoc - supportALoc], MeshDensity=200, LineWidth = 2)
-ylabel("Torque (Nm)");
-xlabel("Distance from Datum (Inch)");
+ylabel("Torque (lbf-in)");
+xlabel("Distance from Datum (in)");
 
 %find the max bending moment and where it is relative to the datum of the
 %far left edge of the shaft
