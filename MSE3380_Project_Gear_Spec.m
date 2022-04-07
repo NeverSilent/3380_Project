@@ -204,7 +204,7 @@ S_c = (S_H * Contact_stress_4)/Z_N;
 %It gives 275000 psi of gear contact strength 
 % that is larger than 261330 psi
 %Achieved FOS
-n_c = (275000*Z_N)/Contact_stress_4;
+n_c_4 = (275000*Z_N)/Contact_stress_4;
 
 
 %GEAR 4 bending
@@ -242,7 +242,7 @@ Stress_num_bending_5 = (W_45*K_v*P_inch*K_m)/(face_width_inch*J_geo_5);
 %Table 14-6 and 14-3 to choose the heat treatment and grade
 %Grade 2 Carburized and Hardened. S_C = 225000 psi, S_t = 65000 psi
 n_c_5 = 225000/Contact_stress_5;
-n_5 = 65000/Stress_num_bending_5;
+n_bending_5 = 65000/Stress_num_bending_5;
 
 
 
@@ -312,7 +312,7 @@ Stress_num_bending_2 = (W_23*K_v_23*P_inch*K_m_23)/(face_width_inch_23*J_geo_2);
 %From table 14-3,
 %Grade 1 flamed hardend: S_t_2 = 45000 psi
 
-n_2 = (45000*Z_N_2)/Stress_num_bending_2;
+n_bending_2 = (45000*Z_N_2)/Stress_num_bending_2;
 
 
 
@@ -330,7 +330,15 @@ Stress_num_bending_3 = (W_23*K_v_23*P_inch*K_m_23)/(face_width_inch_23*J_geo_3);
 %Grade 1 flamed and Hardened. S_C = 170000 psi, S_t = 22000 psi
 
 n_c_3 = (Z_N_3*170000)/Contact_stress_3;
-n_3 = (22000*Y_N_3)/Stress_num_bending_3;
+n_bending_3 = (22000*Y_N_3)/Stress_num_bending_3;
+
+
+
+%Gear factor of safety table
+Gear_Numbers = {'Gear 2'; 'Gear 3'; 'Gear 4'; 'Gear 5'};
+factor_of_safety_for_contact = [n_c_2; n_c_3; n_c_4; n_c_5];
+factor_of_safety_for_bending = [n_bending_2; n_bending_3; n_bending_4; n_bending_5];
+factor_of_safety_summary = table(Gear_Numbers, factor_of_safety_for_contact, factor_of_safety_for_bending)
 
 
 
@@ -339,9 +347,9 @@ n_3 = (22000*Y_N_3)/Stress_num_bending_3;
 
 %GEAR SPECIFICATION SUMMARY TABLE
 
+%Imperial
 
-Gear_Numbers = {'Gear 2'; 'Gear 3'; 'Gear 4'; 'Gear 5'};
-Gear_Diametral_Pitch_Inch = [P_inch; P_inch; P_inch; P_inch];
+Gear_Diametral_Pitch_Teeth_Per_Inch = [P_inch; P_inch; P_inch; P_inch];
 Gear_Heat_Treatment = {'Grade 1 flamed hardend'; 'Grade 1 flamed and Hardened'; 
     'Grade 3 Carburized and hardened'; 'Grade 3 Carburized and hardened'};
 Gear_Contact_Strength_Psi = [170000; 170000; 275000; 275000];
@@ -351,27 +359,16 @@ Gear_Face_Width_Inch = [face_width_inch_23; face_width_inch_23;
     face_width_inch; face_width_inch];
 
 Gear_Summary_Inch_Calculated = table(Gear_Numbers,Gear_Diameters_Inch,Gear_Heat_Treatment, ...
-    Gear_Contact_Strength_Psi,Gear_Bending_Strength_Psi, Gear_Face_Width_Inch, Gear_Diametral_Pitch_Inch)
+    Gear_Contact_Strength_Psi,Gear_Bending_Strength_Psi, Gear_Face_Width_Inch, Gear_Diametral_Pitch_Teeth_Per_Inch)
 
 
 
-%Summary table with the preferred numbers.
+
+
+
+
+
 %{
-Gear_Numbers = {'Gear 2'; 'Gear 3'; 'Gear 4'; 'Gear 5'};
-Gear_Diametral_Pitch_Inch_R = [P_inch; P_inch; P_inch; P_inch];
-Gear_Heat_Treatment = {'Grade 1 flamed hardend'; 'Grade 1 flamed and Hardened'; 
-    'Grade 3 Carburized and hardened'; 'Grade 3 Carburized and hardened'};
-Gear_Contact_Strength_Psi_R = [170000; 170000; 275000; 275000];
-Gear_Bending_Strength_Psi_R = [22000; 22000; 75000; 75000];
-Gear_Diameters_Inch_R = [2.5; 11.5; 2.5; 11.5];
-Gear_Face_Width_Inch_R = [face_width_inch_23; face_width_inch_23;
-    ceil(face_width_inch); ceil(face_width_inch)];
-
-Gear_Summary_Inch_Rounded = table(Gear_Numbers,Gear_Diameters_Inch_R,Gear_Heat_Treatment, ...
-    Gear_Contact_Strength_Psi_R,Gear_Bending_Strength_Psi_R,Gear_Face_Width_Inch_R)
-%}
-
-
 %Summary table with the SI units.
 %7 teeth/in was converted to teeth/m
 Gear_Teeth_Per_Meter = [276; 276; 276; 276];
@@ -383,3 +380,5 @@ Gear_Face_Width_m = [0.04; 0.04; 0.05; 0.05];
 
 Gear_Summary_SI = table(Gear_Numbers,Gear_Diameters_m,Gear_Heat_Treatment, ...
     Gear_Contact_Strength_MPa,Gear_Bending_Strength_MPa,Gear_Face_Width_m, Gear_Teeth_Per_Meter)
+
+%}
