@@ -1,4 +1,4 @@
-%% Calculations: Intermediate SDeflection Analysdis
+%% Calculations: Intermediate Shaft Design for Deflection
 
 %% Define parameters to be passed into the function
 
@@ -22,7 +22,7 @@ loc_G = G - A;
 loc_J = J - A;
 
 % Young's modulus
-E = 30e6;    % [psi]
+E = 30e6;    % [psi], from Table A–5 (p. 1023)
 
 %% Call function for analysis in each plane, determine magnitudes, and show tables
 
@@ -48,7 +48,7 @@ deflections = [deflection_G; deflection_J;];
 table(locations1, slopes, 'VariableNames',{'Locations','Slopes [rad]'})
 table(locations2, deflections, 'VariableNames',{'Locations','Deflections [in]'})
 
-%% Function
+%% Function to calculate and plot slope and deflections, given shaft parameters and bending moments
 function [slope, defl] = deflection_analysis(D1,D3, loc_A,loc_B,loc_G,loc_J, BM, E, plane)
     addpath('SFBM');
     % INPUT PARAMETERS:

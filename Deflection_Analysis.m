@@ -22,7 +22,7 @@ loc_G = G - A;
 loc_J = J - A;
 
 % Young's modulus
-E = 30e6;    % [psi]
+E = 30e6;    % [psi], from Table A–5 (p. 1023)
 
 %% Call function for analysis in each plane, determine magnitudes, and show tables
 
