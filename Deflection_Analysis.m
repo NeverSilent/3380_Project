@@ -1,11 +1,11 @@
 %% Define parameters to be passed into the function
 
+% Load bending moment equations as piecewise symbolic functions [lbf-in]
 load('Matfiles/force_analysis_vars_2022_04_06.mat', 'Mxy', 'Mxz')
 
-D1 = 1.0;   % [in]
-D2 = 1.4;
-D3 = 1.625;
-D4 = 2.0;
+% Diameters from the design for stress analysis [in]
+D1 = 1.2;
+D3 = 1.9;
 
 % Axial locations rightwards from the datum (left end of shaft) [in]
 A = 0.75;       % Bearing A
@@ -24,8 +24,8 @@ E = 30e6;    % [psi]
 
 %% Call function for analysis in each plane, determine magnitudes, and show tables
 
-[slope_xy, defl_xy] = deflection_analysis(D1,D2,D3,D4, loc_A,loc_B,loc_G,loc_J, Mxy, E, 'xy');
-[slope_xz, defl_xz] = deflection_analysis(D1,D2,D3,D4, loc_A,loc_B,loc_G,loc_J, Mxz, E, 'xz');
+[slope_xy, defl_xy] = deflection_analysis(D1,D3, loc_A,loc_B,loc_G,loc_J, Mxy, E, 'xy');
+[slope_xz, defl_xz] = deflection_analysis(D1,D3, loc_A,loc_B,loc_G,loc_J, Mxz, E, 'xz');
 
 mag_slope = sqrt(slope_xy^2 + slope_xz^2);
 mag_defl = sqrt(defl_xy^2 + defl_xz^2);
@@ -47,30 +47,30 @@ table(locations1, slopes, 'VariableNames',{'Locations','Slopes [rad]'})
 table(locations2, deflections, 'VariableNames',{'Locations','Deflections [in]'})
 
 %% Function
-function [slope, defl] = deflection_analysis(D1,D2,D3,D4, loc_A,loc_B,loc_G,loc_J, BM, E, plane)
+function [slope, defl] = deflection_analysis(D1,D3, loc_A,loc_B,loc_G,loc_J, BM, E, plane)
     addpath('SFBM');
     % INPUT PARAMETERS:
-    % Shaft section diameters
+    % Shaft section diameters [in]
     %   D1 = D7
-    %   D2 = D6
     %   D3 = D5
 
-    % Axial locations rightwards from the datum (left end of shaft)
+    % Axial locations rightwards from the location of bearing A [in]
     % See Fig. 7-10, pg. 386
-    %   A: Bearing A
-    %   B: Bearing B
-    %   G: Gear 3
-    %   J: Gear 4
+    %   loc_A: Bearing A (=0)
+    %   loc_B: Bearing B
+    %   loc_G: Gear 3
+    %   loc_J: Gear 4
     %   length: Overall length of shaft
 
-    % M: symbolic piecewise function of bending moment.
+    % BM: symbolic piecewise function of bending moment. [lbf-in]
 
-    % E: Young's Modulus
+    % E: Young's modulus [psi]
 
     % Plane: a string indicating which plane's bending moment was used (xy or xz).
 
-    % Determine if deflections and slopes at the key locations (Bearing A, 
-    % Bearing B, Gear 3, Gear 4) are acceptable as per Table 7-2 (p. 391)
+    % Determine deflections and slopes at the key locations (Bearing A, 
+    % Bearing B, Gear 3, Gear 4). Reference Table 7-2 (p. 391) for 
+    % acceptable values.
 
     % Calculate flexural rigidities
     EI_D1 = E * (pi * D1^4) / 64;
@@ -90,7 +90,7 @@ function [slope, defl] = deflection_analysis(D1,D2,D3,D4, loc_A,loc_B,loc_G,loc_
     % BOUNDARY CONDITION: at A, bearing acts like a pin support 
     % -> zero deflection.
     subs_defl_AG = subs(defl_AG, x, loc_A);                    
-    BC_AG_nodefl = subs_defl_AG == 0
+    BC_AG_nodefl = subs_defl_AG == 0;
     C2 = solve(subs_defl_AG == 0);
 
     % Obtain symbolic function for integrals between J and B
@@ -102,7 +102,7 @@ function [slope, defl] = deflection_analysis(D1,D2,D3,D4, loc_A,loc_B,loc_G,loc_
     % BOUNDARY CONDITION: at B, bearing acts like a pin support 
     % -> zero deflection.
     subs_defl_JB = subs(defl_JB, x, loc_B);                    
-    BC_JB_nodefl = subs_defl_JB == 0
+    BC_JB_nodefl = subs_defl_JB == 0;
     C4 = solve(subs_defl_JB == 0, C4);   % Solve for C4 in terms of C3
 
     % Obtain symbolic function for integrals between G and J
@@ -114,27 +114,27 @@ function [slope, defl] = deflection_analysis(D1,D2,D3,D4, loc_A,loc_B,loc_G,loc_
     % BOUNDARY CONDITION: at G, deflection of AG = deflection of GJ
     subs_defl_AGGJ_1 = subs(defl_AG, x, loc_G);
     subs_defl_AGGJ_2 = subs(defl_GJ, x, loc_G);
-    BC_AGGJ_eqdefl = subs_defl_AGGJ_1 == subs_defl_AGGJ_2
+    BC_AGGJ_eqdefl = subs_defl_AGGJ_1 == subs_defl_AGGJ_2;
     % BOUNDARY CONDITION: at J, deflection of GJ = deflection of JA
     subs_defl_GJJB_1 = subs(defl_GJ, x, loc_J);
     subs_defl_GJJB_2 = subs(defl_JB, x, loc_J);
-    BC_GJJB_eqdefl = subs_defl_GJJB_1 == subs_defl_GJJB_2
+    BC_GJJB_eqdefl = subs_defl_GJJB_1 == subs_defl_GJJB_2;
 
     % REMAINING BOUNDARY CONDITIONS
     subs_slope_AGGJ_1 = subs(slope_AG, x, loc_G);
     subs_slope_AGGJ_2 = subs(slope_GJ, x, loc_G);
-    BC_AGGJ_eqslope = subs_slope_AGGJ_1 == subs_slope_AGGJ_2
+    BC_AGGJ_eqslope = subs_slope_AGGJ_1 == subs_slope_AGGJ_2;
 
     subs_slope_GJJB_1 = subs(slope_GJ, x, loc_J);
     subs_slope_GJJB_2 = subs(slope_JB, x, loc_J);
-    BC_GJJB_eqslope = subs_slope_GJJB_1 == subs_slope_GJJB_2
+    BC_GJJB_eqslope = subs_slope_GJJB_1 == subs_slope_GJJB_2;
 
     coefficient_solutions = solve(BC_AG_nodefl, ...
                                   BC_JB_nodefl, ...
                                   BC_AGGJ_eqdefl, ...
                                   BC_GJJB_eqdefl, ...
                                   BC_AGGJ_eqslope, ...
-                                  BC_GJJB_eqslope)
+                                  BC_GJJB_eqslope);
 
     C1 = coefficient_solutions.C1;
     C2 = coefficient_solutions.C2;
