@@ -25,10 +25,16 @@ F43R = F43T*tan(deg2rad(pressureAngle)); %Force from gear 4 on gear 3 radial
 %of bearing A to the center of bearing B... datum if center of bearing A
 %position from the datum in inches
 
+FaceWidth3 = 2; %facewidth of gear 3 (inch)
+Outside_Bearing = 1 %width of outside bearings (inch)
 supportALoc = 0.75; %center of A from the datum (inch)
 supportBLoc = 10.75; %center of B from the datum (inch)
 position2 = 2.75; %center position of gear 2 (inch)
 position3 = 8.50; %center position of gear 3 (inch)
+leftOfGear3 = (position3 - FaceWidth3/2); %position of left face of gear from datum 
+rightOfGear3 = (position3 + FaceWidth3/2); %position of right face of gear from datum
+leftOfSupportB = (supportBLoc - Outside_Bearing/2); %position of left face of bearing to the right of gear 3 from datum
+rightOfSupportB = (supportBLoc + Outside_Bearing/2); %position of right face of bearing to the right of gear 3 from datum
 
 %find the reaction forces, **xy xz plane: tan = xz rad = xy**
 %Force and moment balance used where ΣFx = ΣFy = ΣFz = ΣM = 0
@@ -38,10 +44,16 @@ position3 = 8.50; %center position of gear 3 (inch)
 %output gear: tangential negitive, radial negitive || gear 3
 %reaction forces: all positive
 
-reactionBy = -(-F12R*(position2 - supportALoc) - F43R*(position3 - supportALoc))/(supportBLoc - supportALoc)
-reactionAy = -(-F12R -F43R + reactionBy)
-reactionBz = -(F12T*(position2 - supportALoc) - F43T*(position3 - supportALoc))/(supportBLoc - supportALoc)
-reactionAz = -(F12T -F43T + reactionBz)
+reactionBy = -(-F12R*(position2 - supportALoc) - F43R*(position3 - supportALoc))/(supportBLoc - supportALoc);
+reactionAy = -(-F12R -F43R + reactionBy);
+reactionBz = -(F12T*(position2 - supportALoc) - F43T*(position3 - supportALoc))/(supportBLoc - supportALoc);
+reactionAz = -(F12T -F43T + reactionBz);
+reactionA = sqrt(reactionAy^2 + reactionAz^2);
+reactionB = sqrt(reactionBy^2 + reactionBz^2);
+Areactions = [reactionAz, reactionAy, reactionA];
+Breactions = [reactionBz, reactionBy, reactionB];
+
+reactionForces = table(Areactions', Breactions', VariableNames = {'A Reaction Forces (lbf)', 'B Reaction Forces (lbf)'}, RowNames = {'Z direction', 'Y Direction', 'Vector Sum'})
 
 %define singularity functions using table 3-1 
 %start at V(x) and then manually do M(x) as the integration in MATLAB
@@ -60,12 +72,12 @@ Vxz(x) = piecewise((0 <= x)  & (x < (position2 - supportALoc)), reactionAz*(x^0)
 Mxy(x) = piecewise((0 <= x)  & (x < (position2 - supportALoc)), reactionAy*(x^1), ...
     ((position2 - supportALoc) <= x) & (x < (position3 - supportALoc)), (reactionAy*(x^1) - F12R*((x - (position2 - supportALoc))^1)), ...
 ((position3 - supportALoc) <= x) & (x < (supportBLoc - supportALoc)), (reactionAy*(x^1) - F12R*((x - (position2 - supportALoc))^1) - F43R*((x - (position3 - supportALoc))^1)), ...
-((supportBLoc - supportALoc) <= x), (reactionAy*(x^1) - F12R*((x - (position2 - supportALoc))^1) - F43R*((x - (position3 - supportALoc))^1) + reactionBy));
+((supportBLoc - supportALoc) <= x), (reactionAy*(x^1) - F12R*((x - (position2 - supportALoc))^1) - F43R*((x - (position3 - supportALoc))^1)));
 
 Mxz(x) = piecewise((0 <= x)  & (x < (position2 - supportALoc)), reactionAz*(x^1), ...
     ((position2 - supportALoc) <= x) & (x < (position3 - supportALoc)), (reactionAz*(x^1) + F12T*((x - (position2 - supportALoc))^1)), ...
 ((position3 - supportALoc) <= x) & (x < (supportBLoc - supportALoc)), (reactionAz*(x^1) + F12T*((x - (position2 - supportALoc))^1) - F43T*((x - (position3 - supportALoc))^1)), ...
-((supportBLoc - supportALoc) <= x), (reactionAz*(x^1) + F12T*((x - (position2 - supportALoc))^1) - F43T*((x - (position3 - supportALoc))^1) + reactionBz));
+((supportBLoc - supportALoc) <= x), (reactionAz*(x^1) + F12T*((x - (position2 - supportALoc))^1) - F43T*((x - (position3 - supportALoc))^1)));
 
 %vector sum the shear and bending
 V(x) = sqrt(Vxy^2 + Vxz^2);
@@ -80,11 +92,11 @@ Torque(x) = piecewise((0 <= x) & (x < (position2 - supportALoc)), 0, ...
 figure();
 subplot(6, 1, 1);
 fplot(Vxy(x), [0, supportBLoc - supportALoc], MeshDensity=200, LineWidth = 2)
-ylabel("V x-y Plane (N)");
+ylabel("V x-y Plane (lbf)");
 
 subplot(6, 1, 2);
 fplot(Mxy, [0, supportBLoc - supportALoc], MeshDensity=200, LineWidth = 2)
-ylabel("M x-y Plane (Nm)");
+ylabel("M x-y Plane (lbf*)");
 
 subplot(6, 1, 3);
 fplot(Vxz, [0, supportBLoc - supportALoc], MeshDensity=200, LineWidth = 2)
@@ -101,13 +113,22 @@ ylabel("MTot (Nm)");
 subplot(6, 1, 6);
 fplot(Torque, [0, supportBLoc - supportALoc], MeshDensity=200, LineWidth = 2)
 ylabel("Torque (Nm)");
+xlabel("Distance from Datum (Inch)");
 
 %find the max bending moment and where it is relative to the datum of the
 %far left edge of the shaft
 x = [0 : 0.001 : (supportBLoc - supportALoc)];
-[MaxBendingMoment, MaxBendingMomemtLoc] = max(subs(M(x)))
+[MaxBendingMoment, MaxBendingMomemtLoc] = max(subs(M(x)));
 MaxBendingMoment = vpa(MaxBendingMoment, 6)
 MaxBendingMomemtLoc = vpa((MaxBendingMomemtLoc * 0.001) + supportALoc, 4)
 
 %compare the MaxBendingMomemtLoc to the closest SCF and choose the critical
-%point to pay attention to.
+%point to pay attention to. Will also want to know the max bending moment
+%at all SCF's concerning diameter changes and key hole centers. 
+%set x to be a matrix of critical locations on the right side of the center
+%of the shaft(where the bending moments are larger)
+x = [leftOfGear3, position3, rightOfGear3, leftOfSupportB, supportBLoc, rightOfSupportB];
+x = x  - supportALoc; %need to subtract off the support A location to achieve datum of the 
+bendingMoments = subs(M(x));
+RowNames = {'Position From Center of Support A (Inch)', 'Bending Moment (Nm)'};
+LocationsToCheck = table(x', double(bendingMoments)', VariableNames = RowNames)
