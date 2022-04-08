@@ -1,6 +1,5 @@
 %First part of the gear specification
 
-
 groupNum = 7;
 
 % Power to be delivered [hp]
@@ -192,11 +191,14 @@ L_4 = 12000 * 60 * w_4;
 %Figure 14-15 using L_4
 Z_N = 0.89;
 
-%Assuming K_R, K_T, C_H = 1
+%Reliability factor
+K_R = 0.995;
+
+%Assuming K_T, C_H = 1
 %Assuming Safety Factor of 1.2 (S_H)
 S_H = 1.2;
 %Gear contact strength in psi
-S_c = (S_H * Contact_stress_4)/Z_N;
+S_c = (S_H * Contact_stress_4)/(Z_N*K_R);
 
 
 %Table 14-6
