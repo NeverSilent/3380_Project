@@ -25,16 +25,16 @@ F43R = F43T*tan(deg2rad(pressureAngle)); %Force from gear 4 on gear 3 radial (lb
 %of bearing A to the center of bearing B... datum if center of bearing A
 %position from the datum in inches
 
-bearingWidth = 1; %width of outside bearing (inch)
-Gearwidth3 = 0.75; %width of left gear on intermediate shaft (inch)
+bearingWidth = 1
+Gearwidth3 = 0.75
 supportALoc = 0.75; %center of A from the datum (inch)
 supportBLoc = 10.75; %center of B from the datum (inch)
 position2 = 2.75; %center position of gear 2 (inch)
 position3 = 8.50; %center position of gear 3 (inch)
-leftGear3 = position3 - Gearwidth3; %left face of gear 3 (inch)
-rightGear3 = position3 + Gearwidth3; %right face of gear 3 (inch)
-leftBearingB = supportBLoc - bearingWidth; %left face of B bearing (inch)
-rightBearingB = supportBLoc + bearingWidth; %right face of B bearing (inch)
+leftGear3 = position3 - Gearwidth3
+rightGear3 = position3 + Gearwidth3 
+leftBearingB = supportBLoc - bearingWidth;
+rightBearingB = supportBLoc + bearingWidth; 
 
 %find the reaction forces, **xy xz plane: tan = xz rad = xy**
 %Force and moment balance used where ΣFx = ΣFy = ΣFz = ΣM = 0
@@ -123,6 +123,4 @@ MaxBendingMoment = vpa(MaxBendingMoment, 6)
 MaxBendingMomemtLoc = vpa((MaxBendingMomemtLoc * 0.001) + supportALoc, 4)
 
 %report critical locations in table with asscioated bending moment
-x = [leftGear3, position3, rightGear3, leftBearingB, supportBLoc, rightBearingB];
-CritBendingMoment = double(subs(M(x)));
-momentTable = table(x', CritBendingMoment', VariableNames = {'Position from Center of Bearing A (inch)', 'Bending Moment at Location (lbf-in)'})
+x = []
