@@ -60,12 +60,12 @@ Vxz(x) = piecewise((0 <= x)  & (x < (position2 - supportALoc)), reactionAz*(x^0)
 Mxy(x) = piecewise((0 <= x)  & (x < (position2 - supportALoc)), reactionAy*(x^1), ...
     ((position2 - supportALoc) <= x) & (x < (position3 - supportALoc)), (reactionAy*(x^1) - F12R*((x - (position2 - supportALoc))^1)), ...
 ((position3 - supportALoc) <= x) & (x < (supportBLoc - supportALoc)), (reactionAy*(x^1) - F12R*((x - (position2 - supportALoc))^1) - F43R*((x - (position3 - supportALoc))^1)), ...
-((supportBLoc - supportALoc) <= x), (reactionAy*(x^1) - F12R*((x - (position2 - supportALoc))^1) - F43R*((x - (position3 - supportALoc))^1)));
+((supportBLoc - supportALoc) <= x), (reactionAy*(x^1) - F12R*((x - (position2 - supportALoc))^1) - F43R*((x - (position3 - supportALoc))^1) + reactionBy));
 
 Mxz(x) = piecewise((0 <= x)  & (x < (position2 - supportALoc)), reactionAz*(x^1), ...
     ((position2 - supportALoc) <= x) & (x < (position3 - supportALoc)), (reactionAz*(x^1) + F12T*((x - (position2 - supportALoc))^1)), ...
 ((position3 - supportALoc) <= x) & (x < (supportBLoc - supportALoc)), (reactionAz*(x^1) + F12T*((x - (position2 - supportALoc))^1) - F43T*((x - (position3 - supportALoc))^1)), ...
-((supportBLoc - supportALoc) <= x), (reactionAz*(x^1) + F12T*((x - (position2 - supportALoc))^1) - F43T*((x - (position3 - supportALoc))^1)));
+((supportBLoc - supportALoc) <= x), (reactionAz*(x^1) + F12T*((x - (position2 - supportALoc))^1) - F43T*((x - (position3 - supportALoc))^1) + reactionBz));
 
 %vector sum the shear and bending
 V(x) = sqrt(Vxy^2 + Vxz^2);
@@ -80,18 +80,23 @@ Torque(x) = piecewise((0 <= x) & (x < (position2 - supportALoc)), 0, ...
 figure();
 subplot(6, 1, 1);
 fplot(Vxy(x), [0, supportBLoc - supportALoc], MeshDensity=200, LineWidth = 2)
-ylabel("V x-y Plane (lbf)");
+ylabel("V x-y Plane (N)");
 
 subplot(6, 1, 2);
 fplot(Mxy, [0, supportBLoc - supportALoc], MeshDensity=200, LineWidth = 2)
+<<<<<<< HEAD
 ylabel("M x-y Plane (lbf-in)");
+=======
+ylabel("M x-y Plane (Nm)");
+>>>>>>> parent of 0717957 (s)
 
 subplot(6, 1, 3);
 fplot(Vxz, [0, supportBLoc - supportALoc], MeshDensity=200, LineWidth = 2)
-ylabel("V x-z Plane (lbf)");
+ylabel("V x-z Plane (N)");
 
 subplot(6, 1, 4);
 fplot(Mxz, [0, supportBLoc - supportALoc], MeshDensity=200, LineWidth = 2)
+<<<<<<< HEAD
 ylabel("M x-z Plane (lbf-in)");
 
 subplot(6, 1, 5);
@@ -102,6 +107,18 @@ subplot(6, 1, 6);
 fplot(Torque, [0, supportBLoc - supportALoc], MeshDensity=200, LineWidth = 2)
 ylabel("Torque (lbf-in)");
 xlabel("Distance from Datum (in)");
+=======
+ylabel("M x-z Plane (Nm)");
+
+subplot(6, 1, 5);
+fplot(M, [0, supportBLoc - supportALoc], MeshDensity=200, LineWidth = 2)
+ylabel("MTot (Nm)");
+
+subplot(6, 1, 6);
+fplot(Torque, [0, supportBLoc - supportALoc], MeshDensity=200, LineWidth = 2)
+ylabel("Torque (Nm)");
+xlabel("Distance from Datum (Inch)");
+>>>>>>> parent of 0717957 (s)
 
 %find the max bending moment and where it is relative to the datum of the
 %far left edge of the shaft
