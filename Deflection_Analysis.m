@@ -48,7 +48,7 @@ deflections = [deflection_G; deflection_J;];
 table(locations1, slopes, 'VariableNames',{'Locations','Slopes [rad]'})
 table(locations2, deflections, 'VariableNames',{'Locations','Deflections [in]'})
 
-%% Function
+%% Function to calculate and plot slope and deflections, given shaft parameters and bending moments
 function [slope, defl] = deflection_analysis(D1,D3, loc_A,loc_B,loc_G,loc_J, BM, E, plane)
     addpath('SFBM');
     % INPUT PARAMETERS:
