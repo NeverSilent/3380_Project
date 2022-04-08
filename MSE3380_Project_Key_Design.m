@@ -35,6 +35,7 @@ key_design_table_inch = table(table_variables_inch, table_values_inch)
 %According to the calculation result, we want the key longer than
 %0.6148 inch.
 %1/2" x 1/2", 1" Long, oversized square key was chosen.
+%Keyway depth is 1/4"
 
 %New factor of safety.
 
