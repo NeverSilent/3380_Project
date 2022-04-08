@@ -90,30 +90,37 @@ Torque(x) = piecewise((0 <= x) & (x < (position2 - supportALoc)), 0, ...
 
 %plot some of the graphs thusfar
 figure();
-subplot(6, 1, 1);
+subplot(3, 2, 1);
 fplot(Vxy(x), [0, supportBLoc - supportALoc], MeshDensity=200, LineWidth = 2)
 ylabel("V x-y Plane (lbf)");
+title('V x-y Plane');
 
-subplot(6, 1, 2);
+subplot(3, 2, 3);
 fplot(Mxy, [0, supportBLoc - supportALoc], MeshDensity=200, LineWidth = 2)
 ylabel("M x-y Plane (lbf-in)");
+title('M x-y Plane');
 
-subplot(6, 1, 3);
+subplot(3, 2, 2);
 fplot(Vxz, [0, supportBLoc - supportALoc], MeshDensity=200, LineWidth = 2)
 ylabel("V x-z Plane (lbf)");
+title('V x-z Plane');
 
-subplot(6, 1, 4);
+subplot(3, 2, 4);
 fplot(Mxz, [0, supportBLoc - supportALoc], MeshDensity=200, LineWidth = 2)
 ylabel("M x-z Plane (lbf-in)");
+title('M x-z Plane');
 
-subplot(6, 1, 5);
+subplot(3, 2, 5);
 fplot(M, [0, supportBLoc - supportALoc], MeshDensity=200, LineWidth = 2)
 ylabel("MTot (lbf-in)");
+xlabel("Distance from Datum (in)");
+title('M Total');
 
-subplot(6, 1, 6);
+subplot(3, 2, 6);
 fplot(Torque, [0, supportBLoc - supportALoc], MeshDensity=200, LineWidth = 2)
 ylabel("Torque (lbf-in)");
 xlabel("Distance from Datum (in)");
+title('Torque');
 
 %find the max bending moment and where it is relative to the datum of the
 %far left edge of the shaft
