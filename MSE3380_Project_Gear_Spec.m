@@ -336,8 +336,26 @@ n_bending_3 = (22000*Y_N_3)/Stress_num_bending_3;
 
 
 
-%Gear factor of safety table
+%Some gear specifications and information that will be helpful later.
 Gear_Numbers = {'Gear 2'; 'Gear 3'; 'Gear 4'; 'Gear 5'};
+gear_teeth = [N_2; N_3; N_4; N_5];
+angular_velocity_rpm = [w_2; w_3; w_4; w_5];
+Torque_lbfft = [T_2_lbfft; T_3_lbfft; T_4_lbfft; T_5_lbfft];
+basic_gear_specification_before_AGMA = table(Gear_Numbers, gear_teeth, angular_velocity_rpm, ...
+    Torque_lbfft)
+
+Gear_Paired_Numbers = {'Gear 2 and 3'; 'Gear 4 and 5'};
+pitch_line_velocity_ft_per_min = [V_23; V_45];
+transmitted_load_lbf = [W_23; W_45];
+pitch_line_velocity_and_transmitted_load = table(pitch_line_velocity_ft_per_min, transmitted_load_lbf)
+
+
+
+
+
+
+%Gear factor of safety table
+
 factor_of_safety_for_contact = [n_c_2; n_c_3; n_c_4; n_c_5];
 factor_of_safety_for_bending = [n_bending_2; n_bending_3; n_bending_4; n_bending_5];
 factor_of_safety_summary = table(Gear_Numbers, factor_of_safety_for_contact, factor_of_safety_for_bending)
