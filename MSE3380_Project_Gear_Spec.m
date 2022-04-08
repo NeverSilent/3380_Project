@@ -195,7 +195,7 @@ Z_N = 0.89;
 K_R = 0.995;
 
 %Assuming K_T, C_H = 1
-%Assuming Safety Factor of 1.2 (S_H)
+%Assuming design Factor of 1.2 (S_H)
 S_H = 1.2;
 %Gear contact strength in psi
 S_c = (S_H * Contact_stress_4)/(Z_N*K_R);
